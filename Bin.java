@@ -14,4 +14,6 @@ public class Bin{
   public Programmer getProgrammer(){
     return this.programmer;
   }
+
+  public void setProgrammer(Programmer givenProgrammer) { this.programmer = givenProgrammer; }
 }

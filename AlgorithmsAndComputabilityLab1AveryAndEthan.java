@@ -2,7 +2,7 @@ import node_helper.IntNode.*;
 import java.util.Arrays;
 
 class NPermutations {
-   long[][] outputArray;
+  long[][] outputArray;
   int nextOutputIndex = 0;
   int numberOfElements;
 
@@ -16,7 +16,7 @@ class NPermutations {
     System.out.println(endTime - startTime);
   }
 
-  public void entryPoint(int n){
+  public int[] entryPoint(int n){
     numberOfElements = n;
     long numberOfPermutations = factorial(numberOfElements);
     outputArray = new long[(int) numberOfPermutations][numberOfElements];
@@ -25,9 +25,11 @@ class NPermutations {
 
     node_helper.IntNode zeroIntNode = new node_helper.IntNode(0, null);
     recursionInsanity(zeroIntNode, initialArray);
+    /*
     for (long[] permutation : outputArray) {
       System.out.println(Arrays.toString(permutation));
     }
+    */
   }
 
   private void recursionInsanity(node_helper.IntNode parent, int[] remainingElements){
@@ -76,7 +78,6 @@ class NPermutations {
     }
   }
 
-  //TODO: implement factorial
   private long factorial(int n) {
     long product = 1;
     for(int i = n; i > 1; i--){

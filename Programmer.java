@@ -1,11 +1,13 @@
 public class Programmer{
-  private String[] companyPreference;
+  private Company[] companyPreference;
 
-  public Programmer(String[] givenPreferences){
+  public Programmer(Company[] givenPreferences){
     companyPreference = givenPreferences;
   }
 
+  /*
   public String toString(){
     return this.getName();
   }
+  */
 }

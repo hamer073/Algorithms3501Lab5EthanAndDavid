@@ -1,75 +1,65 @@
 public class MakeSatisfactory{
 
-  NPermutations permutationGenerator = new NPermutations;
-
   public String[] makeMatches(Company[] companyArray, Programmer[] programmerArray){
-    Bin[][] result = findPossiblePairings(companyArray, programmerArray);
+      Bin[] binArray = new Bin[companyArray.length];
+      //Bin[][] possiblePairings = findPossiblePairings(companyArray, programmerArray);
 
-
-  }
-
-  private Bin[][] findPossiblePairings(Company[] companyArray, Programmer[] progammerArray){
-    Bin[][] combinedArray = new Bin[factorial(companyArray.length)][companyArray.length];
-
-    int[][] permutatedProgrammers = (int)permutationGenerator.entryPoint(programmerArray.length);
-
-    for(int i = 0; i < permutatedProgrammers.length; i++){
-      Bin[] tempBin;
-      for(int j = 0; j < companyArray.length; j++){
-        tempBin[j] = new Bin(companyArray[j], permutatedProgrammers[i][j]);
+      // Fill bin with first preference, companies are static
+      for (int i = 0; i < companyArray.length; i++) {
+          binArray[i] = new Bin(companyArray[i], companyArray[i].getProgrammerPreferences()[1]);
       }
-      combinedArray[i] = tempBin;
-    }
-    return combinedArray;
+
+      Bin[][] problemPairs = new Bin[companyArray.length][2];
+      boolean prefCheck = checkDuplicates(binArray, problemPairs);
+
+      while(prefCheck){
+          fixDuplicate(problemPairs);
+          problemPairs = new Bin[companyArray.length][2];
+          prefCheck = checkDuplicates(binArray, problemPairs);
+      }
+
+      if(!checkSatisfactory()){
+          makeSatisfactory();
+      }
+
   }
 
   private Boolean checkSatisfactory(){
 
   }
 
-  private int[] checkPreferenceDif(){
+  //
+  private boolean checkDuplicates(Bin[] binArray, Bin[][] problemPairs){
+      int problemPairsIndex = 0;
+      boolean prefCheck = false;
 
+      //
+      for(int i = 0; i < binArray.length; i++) {
+          for (int j = i+1; j < binArray.length; j++) {
+              if (binArray[i].getProgrammer() == binArray[j].getProgrammer()) {
+                  problemPairs[problemPairsIndex][0] = binArray[i];
+                  problemPairs[problemPairsIndex][1] = binArray[j];
+                  prefCheck = true;
+                  problemPairsIndex++;
+              }
+          }
+      }
+      return prefCheck;
   }
 
-  private int factorial(int n){
-    int result = 1;
-    for(int i = n; n > 1; i--){
-      result = result * i;
-    }
-    return result;
+  private void fixDuplicate(Bin[][] problemPairs){
+      //
+      for(int i = 0; i < problemPairs.length; i++){
+          if(problemPairs[i] == null){
+              break;
+          }
+
+          // Sets second of each duplicate to the next companies desired programmer
+          problemPairs[i][1].setProgrammer(problemPairs[i][1].getCompany().getNextProgrammer());
+      }
   }
 
   public static void main(String[] args){
-    Company A = new Company(new String[] = {"Two","Three","One"});
-    Company B = new Company(new String[] = {"One","Two","Three"});
-    Company C = new Company(new String[] = {"One","Three","Two"});
-    //Company D = new Company(new String[] = {"One","Three","Two","Four","Five"});
-    //Company E = new Company(new String[] = {"Two","Three","Five","Four","One"});
-
-    Programmer One = new Programmer(new char[] = {'A','C','B'});
-    Programmer Two = new Programmer(new char[] = {'B','C','A'});
-    Programmer Three = new Programmer(new char[] = {'C','A','B'});
-    //Programmer Four = new Programmer(new char[] = {'C','B','D','A','E'});
-    //Programmer Five = new Programmer(new char[] = {'A','D','B','C','E'});
-
-    Company[] companyArray = {A,B,C
-      //,D,E
-    };
-    Programmer[] programmerArray = {One,Two,Three
-      //,Four,Five
-    };
-
-    Bin[][] results = findPossiblePairings(companyArray, programmerArray);
-    for(int i = 0; i < results.length; i++){
-      String output = "";
-      System.out.println("Permutation number " + i);
-      for(int j = 0; j < results[i].length; j++){
-        output = output + results[i][j].getCompany().toString() + results[i][j].getProgrammer().toString();
-      }
-      System.out.println(output);
-    }
-
-    //String[] result = makeMatches(companyArray, programmerArray);
   }
 
 }
