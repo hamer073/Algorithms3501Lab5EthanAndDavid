@@ -1,9 +1,10 @@
 public class Company{
   private Programmer[] programmerPreferences;
   private int currentPref = 0;
+  private final String name;
 
-  public Company(Programmer[] givenPreferences){
-    this.programmerPreferences = givenPreferences;
+  public Company(String name){
+      this.name = name;
   }
 
   /*
@@ -12,11 +13,19 @@ public class Company{
   }
   */
 
+  public void setProgrammerPreferences(Programmer[] preferences){
+      this.programmerPreferences = preferences;
+  }
+
   public Programmer[] getProgrammerPreferences() { return this.programmerPreferences; }
 
   public Programmer getNextProgrammer(){
-      currentPref++;
+      currentPref = currentPref + 1 % programmerPreferences.length-1;
       return programmerPreferences[currentPref];
+  }
+
+  public String getName(){
+      return this.name;
   }
 
 }

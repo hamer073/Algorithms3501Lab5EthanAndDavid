@@ -1,6 +1,10 @@
+import java.util.Arrays;
+
 public class MakeSatisfactory{
 
-  public String[] makeMatches(Company[] companyArray, Programmer[] programmerArray){
+    public MakeSatisfactory(){}
+
+    public Bin[] makeMatches(Company[] companyArray, Programmer[] programmerArray){
       Bin[] binArray = new Bin[companyArray.length];
       //Bin[][] possiblePairings = findPossiblePairings(companyArray, programmerArray);
 
@@ -18,15 +22,35 @@ public class MakeSatisfactory{
           prefCheck = checkDuplicates(binArray, problemPairs);
       }
 
-      if(!checkSatisfactory()){
-          makeSatisfactory();
+      checkAndMakeSatisfactory(binArray);
+
+      return binArray;
+    }
+
+    private void checkAndMakeSatisfactory(Bin[] pairings){
+      for(int i = 0; i < pairings.length; i++){
+          for(int j = i+1; j < pairings.length; j++){
+              if(checkNotSatisfactory(pairings[i], pairings[j])){
+                  makeSatisfactory(pairings[i], pairings[j]);
+              }
+          }
       }
+    }
 
-  }
+    private void makeSatisfactory(Bin pairingOne, Bin pairingTwo){
+      Programmer tempProgrammer = pairingOne.getProgrammer();
+      pairingOne.setProgrammer(pairingTwo.getProgrammer());
+      pairingTwo.setProgrammer(tempProgrammer);
+    }
 
-  private Boolean checkSatisfactory(){
+    private Boolean checkNotSatisfactory(Bin pairingOne, Bin pairingTwo){
+      int programmerOneCompanyOne = Arrays.asList(pairingOne.getProgrammer().getCompanyPreference()).indexOf(pairingOne.getCompany());
+      int programmerOneCompanyTwo = Arrays.asList(pairingOne.getProgrammer().getCompanyPreference()).indexOf(pairingTwo.getCompany());
+      int companyTwoProgrammerOne = Arrays.asList(pairingTwo.getCompany().getProgrammerPreferences()).indexOf(pairingOne.getProgrammer());
+      int companyTwoProgrammerTwo = Arrays.asList(pairingTwo.getCompany().getProgrammerPreferences()).indexOf(pairingTwo.getProgrammer());
 
-  }
+      return ((programmerOneCompanyOne > programmerOneCompanyTwo) && (companyTwoProgrammerOne > companyTwoProgrammerTwo));
+    }
 
   //
   private boolean checkDuplicates(Bin[] binArray, Bin[][] problemPairs){
@@ -50,7 +74,7 @@ public class MakeSatisfactory{
   private void fixDuplicate(Bin[][] problemPairs){
       //
       for(int i = 0; i < problemPairs.length; i++){
-          if(problemPairs[i] == null){
+          if(problemPairs[i][0] == null){
               break;
           }
 
@@ -60,6 +84,33 @@ public class MakeSatisfactory{
   }
 
   public static void main(String[] args){
+
+      MakeSatisfactory run = new MakeSatisfactory();
+
+      Company A = new Company("A");
+      Company B = new Company("B");
+      Company C = new Company("C");
+
+      Programmer One = new Programmer("One");
+      Programmer Two = new Programmer("Two");
+      Programmer Three = new Programmer("Three");
+
+      A.setProgrammerPreferences(new Programmer[] {Two,Three,One});
+      B.setProgrammerPreferences(new Programmer[] {One,Two,Three});
+      C.setProgrammerPreferences(new Programmer[] {One,Three,Two});
+
+      One.setCompanyPreference(new Company[] {A,C,B});
+      Two.setCompanyPreference(new Company[] {B,C,A});
+      Three.setCompanyPreference(new Company[] {C,A,B});
+
+      Company[] companyArray = new Company[] {A, B, C};
+      Programmer[] programmerArray = new Programmer[] {One, Two, Three};
+
+      Bin[] satisfactoryMatches = run.makeMatches(companyArray, programmerArray);
+
+      for(int i = 0; i < satisfactoryMatches.length; i++) {
+          System.out.println(satisfactoryMatches[i].getCompany().getName() + " and " + satisfactoryMatches[i].getProgrammer().getName());
+      }
   }
 
 }
