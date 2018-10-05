@@ -5,23 +5,28 @@ public class MakeSatisfactory{
     public MakeSatisfactory(){}
 
     public Bin[] makeMatches(Company[] companyArray, Programmer[] programmerArray){
+        //System.out.println("Initializing bin array and filling");
       Bin[] binArray = new Bin[companyArray.length];
       //Bin[][] possiblePairings = findPossiblePairings(companyArray, programmerArray);
 
       // Fill bin with first preference, companies are static
       for (int i = 0; i < companyArray.length; i++) {
-          binArray[i] = new Bin(companyArray[i], companyArray[i].getProgrammerPreferences()[1]);
+          binArray[i] = new Bin(companyArray[i], companyArray[i].getProgrammerPreferences()[0]);
       }
 
+      //System.out.println("Doing initial check for duplicates");
       Bin[][] problemPairs = new Bin[companyArray.length][2];
       boolean prefCheck = checkDuplicates(binArray, problemPairs);
 
       while(prefCheck){
+          //System.out.println("Fixing duplicates");
           fixDuplicate(problemPairs);
           problemPairs = new Bin[companyArray.length][2];
+          //System.out.println("Checking for new duplicates");
           prefCheck = checkDuplicates(binArray, problemPairs);
       }
 
+      //System.out.println("Checking if the pairings are satisfactory and fixing otherwise");
       checkAndMakeSatisfactory(binArray);
 
       return binArray;
