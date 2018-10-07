@@ -35,5 +35,14 @@ public class Test {
         for(int i = 0; i < satisfactoryMatches.length; i++) {
             System.out.println(satisfactoryMatches[i].getCompany().getName() + " and " + satisfactoryMatches[i].getProgrammer().getName());
         }
+
+        // Test to check satisfactory pairings
+        /*
+        for(int i = 0; i < satisfactoryMatches.length; i++){
+            for(int j = i+1; j < satisfactoryMatches.length; j++){
+                System.out.println("Are the pairings satisfactory? " + Boolean.toString(!run.checkNotSatisfactory(satisfactoryMatches[i], satisfactoryMatches[j])));
+            }
+        }
+        */
     }
 }

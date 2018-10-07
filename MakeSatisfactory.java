@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class MakeSatisfactory{
 
@@ -33,13 +34,18 @@ public class MakeSatisfactory{
     }
 
     private void checkAndMakeSatisfactory(Bin[] pairings){
-      for(int i = 0; i < pairings.length; i++){
-          for(int j = i+1; j < pairings.length; j++){
-              if(checkNotSatisfactory(pairings[i], pairings[j])){
-                  makeSatisfactory(pairings[i], pairings[j]);
-              }
-          }
-      }
+        boolean needsChecking = true;
+        while(needsChecking) {
+            needsChecking = false;
+            for (int i = 0; i < pairings.length; i++) {
+                for (int j = i + 1; j < pairings.length; j++) {
+                    if (checkNotSatisfactory(pairings[i], pairings[j])) {
+                        makeSatisfactory(pairings[i], pairings[j]);
+                        needsChecking = true;
+                    }
+                }
+            }
+        }
     }
 
     private void makeSatisfactory(Bin pairingOne, Bin pairingTwo){
@@ -48,7 +54,7 @@ public class MakeSatisfactory{
       pairingTwo.setProgrammer(tempProgrammer);
     }
 
-    private Boolean checkNotSatisfactory(Bin pairingOne, Bin pairingTwo){
+    public Boolean checkNotSatisfactory(Bin pairingOne, Bin pairingTwo){
       int programmerOneCompanyOne = Arrays.asList(pairingOne.getProgrammer().getCompanyPreference()).indexOf(pairingOne.getCompany());
       int programmerOneCompanyTwo = Arrays.asList(pairingOne.getProgrammer().getCompanyPreference()).indexOf(pairingTwo.getCompany());
       int companyTwoProgrammerOne = Arrays.asList(pairingTwo.getCompany().getProgrammerPreferences()).indexOf(pairingOne.getProgrammer());
