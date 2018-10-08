@@ -2,6 +2,22 @@
 Authors: Ethan Hammer and David Chong\
 Completed: 10/18
 
+Running MakeSatisfactory
+-
+There are three TestData.txt files as examples for setting up the data. Names are allowed to be any length within java's limitations 
+* Line one contains how many companies/programmers you have. If you have 3 companies and three programmers then the first line should be three
+  * Note that you must have an equal number of companies and programmers for the program to run correctly
+* The next n lines (where n is the first number that you give) should be the name of the first company followed by a space and then their programmer preferences in descending order with a space between each programmer
+  * For example for company A with preferences 1 3 2 the line would look like: A 1 3 2
+* After all of the companies are input then you do the same with the programmers.
+  * NOTE the names must be spelled EXACTLY the same otherwise the preferences the program gets will be incomplete.
+  
+Then compile MakeSatisfactory.java, Bin.java, Company.java, and Programmer.java (If you want a simple example of the program working with the example given in the lab pdf of companies and programmers compile Test.java as well)
+<br>
+Then to run call MakeSatisfactory with the full path to a text file with your company and programmer information
+* For example from the command line to run on TestData.txt you'd call java MakeSatisfactory Path/To/TestData/TestData.txt
+<br>
+
 Explain why the algorithm is correct
 -
 Our algorithm works by first giving each company their first choice of programmer. This allows for the best case where they get their first choice.

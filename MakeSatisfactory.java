@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -54,7 +56,7 @@ public class MakeSatisfactory{
       pairingTwo.setProgrammer(tempProgrammer);
     }
 
-    public Boolean checkNotSatisfactory(Bin pairingOne, Bin pairingTwo){
+    private Boolean checkNotSatisfactory(Bin pairingOne, Bin pairingTwo){
       int programmerOneCompanyOne = Arrays.asList(pairingOne.getProgrammer().getCompanyPreference()).indexOf(pairingOne.getCompany());
       int programmerOneCompanyTwo = Arrays.asList(pairingOne.getProgrammer().getCompanyPreference()).indexOf(pairingTwo.getCompany());
       int companyTwoProgrammerOne = Arrays.asList(pairingTwo.getCompany().getProgrammerPreferences()).indexOf(pairingOne.getProgrammer());
@@ -94,34 +96,102 @@ public class MakeSatisfactory{
       }
   }
 
-  public static void main(String[] args){
+    public static void main(String[] args) throws FileNotFoundException {
 
-      MakeSatisfactory run = new MakeSatisfactory();
+        // Reading input from a file for this needs quite a bit of setup
 
-      Company A = new Company("A");
-      Company B = new Company("B");
-      Company C = new Company("C");
+        Scanner sc = new Scanner(new File(args[0]));
+        MakeSatisfactory run = new MakeSatisfactory();
 
-      Programmer One = new Programmer("One");
-      Programmer Two = new Programmer("Two");
-      Programmer Three = new Programmer("Three");
+        // First we get the number of companies and programmers
+        // This is not a combined value, so it can be read as just the number of companies or just the number of programmers
+        int n = sc.nextInt();
+        sc.nextLine();
 
-      A.setProgrammerPreferences(new Programmer[] {Two,Three,One});
-      B.setProgrammerPreferences(new Programmer[] {One,Two,Three});
-      C.setProgrammerPreferences(new Programmer[] {One,Three,Two});
+        // Setting up the company and programmer arrays that we'll pass to the main function
+        // as well as a couple of arrays to keep track of the preferences
+        Company[] companies = new Company[n];
+        String[][] companyPreferences = new String[n][n];
+        Programmer[] programmers = new Programmer[n];
+        String[][] programmerPreferences = new String[n][n];
 
-      One.setCompanyPreference(new Company[] {A,C,B});
-      Two.setCompanyPreference(new Company[] {B,C,A});
-      Three.setCompanyPreference(new Company[] {C,A,B});
+        // This populates the company array with all the new companies
+        // As well as the company preference array for each company
+        for (int i = 0; i < n; i++) {
+            companies[i] = new Company(sc.next());
+            for (int j = 0; j < n; j++) {
+                companyPreferences[i][j] = sc.next();
+            }
+        }
 
-      Company[] companyArray = new Company[] {A, B, C};
-      Programmer[] programmerArray = new Programmer[] {One, Two, Three};
+        // This loop does the same as the above except this one is working on programmers and their preferences
+        for (int i = 0; i < n; i++) {
+            programmers[i] = new Programmer(sc.next());
+            for (int j = 0; j < n; j++) {
+                programmerPreferences[i][j] = sc.next();
+            }
+        }
 
-      Bin[] satisfactoryMatches = run.makeMatches(companyArray, programmerArray);
+        // A couple lines for debugging
+        /*System.out.println(Arrays.toString(companies));
+        for (String[] preferences : companyPreferences) {
+            System.out.println(Arrays.toString(preferences));
+        }
 
-      for(int i = 0; i < satisfactoryMatches.length; i++) {
-          System.out.println(satisfactoryMatches[i].getCompany().getName() + " and " + satisfactoryMatches[i].getProgrammer().getName());
-      }
-  }
+        System.out.println(Arrays.toString(programmers));
+        for (String[] preferences : programmerPreferences) {
+            System.out.println(Arrays.toString(preferences));
+        }*/
+
+        // Now we need to match up the company preferences with programmers
+        // And the programmer preferences with companies
+        for (int i = 0; i < n; i++) {
+            Company currentCompany = companies[i];
+            String[] currentCompanyPreferences = companyPreferences[i];
+            Programmer[] tempProgrammers = new Programmer[n];
+
+            Programmer currentProgrammer = programmers[i];
+            String[] currentProgrammerPreferences = programmerPreferences[i];
+            Company[] tempCompanies = new Company[n];
+
+            for (int j = 0; j < n; j++) {
+                boolean notFound = true;
+                int programmerIndex = 0;
+
+                while (notFound) {
+                    if (currentCompanyPreferences[j].equals(programmers[programmerIndex].getName())) {
+                        tempProgrammers[j] = programmers[programmerIndex];
+                        notFound = false;
+                    } else {
+                        programmerIndex++;
+                    }
+                }
+                currentCompany.setProgrammerPreferences(tempProgrammers);
+            }
+
+            for (int j = 0; j < n; j++) {
+                boolean notFound = true;
+                int companyIndex = 0;
+
+                while (notFound) {
+                    if (currentProgrammerPreferences[j].equals(companies[companyIndex].getName())) {
+                        tempCompanies[j] = companies[companyIndex];
+                        notFound = false;
+                    } else {
+                        companyIndex++;
+                    }
+                }
+                currentProgrammer.setCompanyPreference(tempCompanies);
+            }
+        }
+
+        // Now we should be able to pass the company and programmer arrays to the top level method and get a correct output
+        Bin[] satisfactoryMatches = run.makeMatches(companies, programmers);
+
+        for(Bin pairing : satisfactoryMatches) {
+            System.out.println(pairing.getCompany().getName() + " and " + pairing.getProgrammer().getName());
+        }
+
+    }
 
 }

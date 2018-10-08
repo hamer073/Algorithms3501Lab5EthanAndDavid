@@ -1,0 +1,9 @@
+4
+Target David Clare Kallie Ethan
+Apple Kallie Clare David Ethan
+BestBuy Ethan David Clare Kallie
+Microsoft Clare David Ethan Kallie
+David Microsoft Apple BestBuy Target
+Kallie BestBuy Target Apple Microsoft
+Ethan Microsoft Target Apple BestBuy
+Clare Target BestBuy Apple Microsoft

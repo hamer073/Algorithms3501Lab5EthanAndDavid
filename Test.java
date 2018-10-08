@@ -1,6 +1,22 @@
 public class Test {
     public static void main(String[] args){
+        test1();
+        System.out.println();
+        //test2();
 
+        // Test to check satisfactory pairings
+        /*
+        for(int i = 0; i < satisfactoryMatches.length; i++){
+            for(int j = i+1; j < satisfactoryMatches.length; j++){
+                System.out.println("Are the pairings satisfactory? " + Boolean.toString(!run.checkNotSatisfactory(satisfactoryMatches[i], satisfactoryMatches[j])));
+            }
+        }
+        */
+
+
+    }
+
+    private static void test1(){
         MakeSatisfactory run = new MakeSatisfactory();
 
         Company A = new Company("A");
@@ -32,17 +48,38 @@ public class Test {
 
         Bin[] satisfactoryMatches = run.makeMatches(companyArray, programmerArray);
 
-        for(int i = 0; i < satisfactoryMatches.length; i++) {
-            System.out.println(satisfactoryMatches[i].getCompany().getName() + " and " + satisfactoryMatches[i].getProgrammer().getName());
+        for(Bin pairing :  satisfactoryMatches) {
+            System.out.println(pairing.getCompany().getName() + " and " + pairing.getProgrammer().getName());
         }
+    }
 
-        // Test to check satisfactory pairings
-        /*
-        for(int i = 0; i < satisfactoryMatches.length; i++){
-            for(int j = i+1; j < satisfactoryMatches.length; j++){
-                System.out.println("Are the pairings satisfactory? " + Boolean.toString(!run.checkNotSatisfactory(satisfactoryMatches[i], satisfactoryMatches[j])));
-            }
+    private static void test2(){
+
+        MakeSatisfactory run = new MakeSatisfactory();
+
+        Company A = new Company("A");
+        Company B = new Company("B");
+        Company C = new Company("C");
+
+        Programmer One = new Programmer("One");
+        Programmer Two = new Programmer("Two");
+        Programmer Three = new Programmer("Three");
+
+        A.setProgrammerPreferences(new Programmer[] {Two,Three,One});
+        B.setProgrammerPreferences(new Programmer[] {One,Two,Three});
+        C.setProgrammerPreferences(new Programmer[] {One,Three,Two});
+
+        One.setCompanyPreference(new Company[] {A,C,B});
+        Two.setCompanyPreference(new Company[] {B,C,A});
+        Three.setCompanyPreference(new Company[] {C,A,B});
+
+        Company[] companyArray = new Company[] {A, B, C};
+        Programmer[] programmerArray = new Programmer[] {One, Two, Three};
+
+        Bin[] satisfactoryMatches = run.makeMatches(companyArray, programmerArray);
+
+        for(Bin pairing : satisfactoryMatches) {
+            System.out.println(pairing.getCompany().getName() + " and " + pairing.getProgrammer().getName());
         }
-        */
     }
 }
