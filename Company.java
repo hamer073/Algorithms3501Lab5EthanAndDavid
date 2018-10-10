@@ -20,7 +20,7 @@ public class Company{
   public Programmer[] getProgrammerPreferences() { return this.programmerPreferences; }
 
   public Programmer getNextProgrammer(){
-      currentPref = (currentPref + 1) % (programmerPreferences.length-1);
+      currentPref = (currentPref + 1) % (programmerPreferences.length);
       return programmerPreferences[currentPref];
   }
 

@@ -2,7 +2,7 @@ public class Test {
     public static void main(String[] args){
         test1();
         System.out.println();
-        //test2();
+        test2();
 
         // Test to check satisfactory pairings
         /*
@@ -51,6 +51,12 @@ public class Test {
         for(Bin pairing :  satisfactoryMatches) {
             System.out.println(pairing.getCompany().getName() + " and " + pairing.getProgrammer().getName());
         }
+
+        for(int i = 0; i < satisfactoryMatches.length; i++){
+            for(int j = i+1; j < satisfactoryMatches.length; j++){
+                System.out.println("Are the pairings satisfactory? " + Boolean.toString(!run.checkNotSatisfactory(satisfactoryMatches[i], satisfactoryMatches[j])));
+            }
+        }
     }
 
     private static void test2(){
@@ -80,6 +86,12 @@ public class Test {
 
         for(Bin pairing : satisfactoryMatches) {
             System.out.println(pairing.getCompany().getName() + " and " + pairing.getProgrammer().getName());
+        }
+
+        for(int i = 0; i < satisfactoryMatches.length; i++){
+            for(int j = i+1; j < satisfactoryMatches.length; j++){
+                System.out.println("Are the pairings satisfactory? " + Boolean.toString(!run.checkNotSatisfactory(satisfactoryMatches[i], satisfactoryMatches[j])));
+            }
         }
     }
 }

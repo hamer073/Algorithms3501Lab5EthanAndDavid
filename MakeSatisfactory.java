@@ -56,7 +56,7 @@ public class MakeSatisfactory{
       pairingTwo.setProgrammer(tempProgrammer);
     }
 
-    private Boolean checkNotSatisfactory(Bin pairingOne, Bin pairingTwo){
+    public Boolean checkNotSatisfactory(Bin pairingOne, Bin pairingTwo){
       int programmerOneCompanyOne = Arrays.asList(pairingOne.getProgrammer().getCompanyPreference()).indexOf(pairingOne.getCompany());
       int programmerOneCompanyTwo = Arrays.asList(pairingOne.getProgrammer().getCompanyPreference()).indexOf(pairingTwo.getCompany());
       int companyTwoProgrammerOne = Arrays.asList(pairingTwo.getCompany().getProgrammerPreferences()).indexOf(pairingOne.getProgrammer());
@@ -190,6 +190,12 @@ public class MakeSatisfactory{
 
         for(Bin pairing : satisfactoryMatches) {
             System.out.println(pairing.getCompany().getName() + " and " + pairing.getProgrammer().getName());
+        }
+
+        for(int i = 0; i < satisfactoryMatches.length; i++){
+            for(int j = i+1; j < satisfactoryMatches.length; j++){
+                System.out.println("Are the pairings satisfactory? " + Boolean.toString(!run.checkNotSatisfactory(satisfactoryMatches[i], satisfactoryMatches[j])));
+            }
         }
 
     }

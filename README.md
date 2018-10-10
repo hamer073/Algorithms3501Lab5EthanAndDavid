@@ -30,4 +30,4 @@ Our algorithm works by first giving each company their first choice of programme
 
 Find efficiency of the algorithm
 -
-θ(n/2) + θ((n^2-n)/4) + O(n/2) + θ((n^2-n)/4) + O((2n^3-2n^2)/2) = O(n^3-((n^2+n)/2)+n)
+Our calculated big-O for this algorithm is O(3n^2+3n) = O(n^2) 
